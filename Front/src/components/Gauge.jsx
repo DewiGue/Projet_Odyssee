@@ -1,5 +1,7 @@
 // ⚠️ Tranches de niveau définies par Jordan (pas issues du contrat d'API/Dewi).
 // À confirmer/valider si ces seuils doivent correspondre à une vraie logique métier.
+import StatusBadge from './StatusBadge'
+
 const LEVEL_THRESHOLDS = [
   { max: 40, label: 'Critique', color: 'bg-red-500', textColor: 'text-red-700' },
   { max: 60, label: 'Mise à niveau à faire', color: 'bg-orange-400', textColor: 'text-orange-700' },
@@ -11,8 +13,9 @@ function getLevelInfo(percent) {
   return LEVEL_THRESHOLDS.find((t) => percent <= t.max) ?? LEVEL_THRESHOLDS[LEVEL_THRESHOLDS.length - 1]
 }
 
-export default function Gauge({ label, value, max = 100, unit = '%' }) {
-  const hasValue = value !== null && value !== undefined
+export default function Gauge({ label, value, max = 100, unit = '%', status }) {
+  const isUnavailable = status === 'MISSING' || status === 'STALE'
+  const hasValue = !isUnavailable && value !== null && value !== undefined
   const percent = hasValue ? Math.min(100, Math.max(0, (value / max) * 100)) : 0
   const levelInfo = hasValue ? getLevelInfo(percent) : null
 
@@ -34,6 +37,7 @@ export default function Gauge({ label, value, max = 100, unit = '%' }) {
         {levelInfo ? (
           <span className={`text-sm font-medium ${levelInfo.textColor}`}>{levelInfo.label}</span>
         ) : null}
+        {isUnavailable ? <StatusBadge status={status} /> : null}
       </div>
     </div>
   )
