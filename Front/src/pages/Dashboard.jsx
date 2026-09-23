@@ -16,6 +16,7 @@ export default function Dashboard() {
     prochainCycle,
     mode,
   } = fakeDashboardState
+  
 
   return (
     <div className="p-6 flex flex-col gap-6">
