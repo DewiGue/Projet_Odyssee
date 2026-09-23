@@ -30,10 +30,10 @@ export default function Simulation() {
 
   return (
     <div className="p-6 flex flex-col gap-6">
-      <h1 className="text-2xl font-bold">Simulation</h1>
+      <h1 className="text-2xl font-bold text-gray-100">Simulation</h1>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">Scénarios</h2>
+        <h2 className="text-lg font-semibold text-gray-200">Scénarios</h2>
         <div className="flex gap-2 flex-wrap">
           {SCENARIOS.map((scenario) => (
             <ScenarioButton
@@ -47,7 +47,7 @@ export default function Simulation() {
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">Vitesse de simulation</h2>
+        <h2 className="text-lg font-semibold text-gray-200">Vitesse de simulation</h2>
         <SpeedControl
           speed={speed}
           onSpeedChange={setSpeed}

@@ -4,6 +4,7 @@
 
 import { useState } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import Card from '../components/Card'
 import Gauge from '../components/Gauge'
 import StatusBadge from '../components/StatusBadge'
 import SpeedControl from '../components/SpeedControl'
@@ -27,56 +28,56 @@ export default function Crise() {
 
   return (
     <div className="p-6 flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-red-600">MODE CRISE</h1>
+      <h1 className="text-2xl font-bold text-red-500 tracking-wide">MODE CRISE</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="border border-gray-300 rounded-lg p-4 flex flex-col gap-2">
-          <span className="text-sm text-gray-500">Autonomie cible</span>
-          <span className="text-base font-medium">{autonomieCible} h</span>
-        </div>
+        <Card className="flex flex-col gap-2">
+          <span className="text-sm text-gray-400">Autonomie cible</span>
+          <span className="text-base font-medium text-gray-100">{autonomieCible} h</span>
+        </Card>
 
-        <div className="border border-gray-300 rounded-lg p-4 flex flex-col gap-2">
-          <span className="text-sm text-gray-500">Réserve cible</span>
-          <span className="text-base font-medium">{reserveCible} %</span>
-        </div>
+        <Card className="flex flex-col gap-2">
+          <span className="text-sm text-gray-400">Réserve cible</span>
+          <span className="text-base font-medium text-gray-100">{reserveCible} %</span>
+        </Card>
 
-        <div className="border border-gray-300 rounded-lg p-4 flex flex-col gap-2">
-          <span className="text-sm text-gray-500">Temps écoulé</span>
-          <span className="text-base font-medium">{tempsEcoule} h</span>
-        </div>
+        <Card className="flex flex-col gap-2">
+          <span className="text-sm text-gray-400">Temps écoulé</span>
+          <span className="text-base font-medium text-gray-100">{tempsEcoule} h</span>
+        </Card>
 
-        <div className="border border-gray-300 rounded-lg p-4 flex flex-col gap-2">
-          <span className="text-sm text-gray-500">Temps restant</span>
-          <span className="text-base font-medium">{tempsRestant} h</span>
-        </div>
+        <Card className="flex flex-col gap-2">
+          <span className="text-sm text-gray-400">Temps restant</span>
+          <span className="text-base font-medium text-gray-100">{tempsRestant} h</span>
+        </Card>
 
-        <div className="border border-gray-300 rounded-lg p-4">
+        <Card>
           <Gauge label="Réserve actuelle" value={reserveActuelle} unit="%" />
-        </div>
+        </Card>
 
-        <div className="border border-gray-300 rounded-lg p-4 flex flex-col gap-2">
-          <span className="text-sm text-gray-500">État</span>
+        <Card className="flex flex-col gap-2">
+          <span className="text-sm text-gray-400">État</span>
           <StatusBadge status={etat} />
-        </div>
+        </Card>
       </div>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">Évolution de la réserve</h2>
-        <div className="border border-gray-300 rounded-lg p-4 h-64">
+        <h2 className="text-lg font-semibold text-gray-100">Évolution de la réserve</h2>
+        <Card className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={fakeReserveHistorique}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="heure" label={{ value: 'Heures', position: 'insideBottom', offset: -5 }} />
-              <YAxis label={{ value: 'Réserve (%)', angle: -90, position: 'insideLeft' }} />
-              <Tooltip />
-              <Line type="monotone" dataKey="reserve" stroke="#3b82f6" strokeWidth={2} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis dataKey="heure" stroke="#9ca3af" label={{ value: 'Heures', position: 'insideBottom', offset: -5, fill: '#9ca3af' }} />
+              <YAxis stroke="#9ca3af" label={{ value: 'Réserve (%)', angle: -90, position: 'insideLeft', fill: '#9ca3af' }} />
+              <Tooltip contentStyle={{ backgroundColor: '#111827', border: '1px solid #06b6d4', borderRadius: '8px', color: '#f3f4f6' }} />
+              <Line type="monotone" dataKey="reserve" stroke="#22d3ee" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
-        </div>
+        </Card>
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">Vitesse de simulation</h2>
+        <h2 className="text-lg font-semibold text-gray-100">Vitesse de simulation</h2>
         <SpeedControl speed={speed} onSpeedChange={setSpeed} onAdvance={handleAdvance} />
       </section>
     </div>
