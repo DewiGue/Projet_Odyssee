@@ -23,7 +23,7 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <div className="border border-gray-300 rounded-lg p-4">
-          <Gauge label="Niveau du réservoir" value={niveau.value} unit={niveau.unit} />
+          <Gauge label="Niveau" value={niveau.value} unit={niveau.unit} status={niveau.status} />
         </div>
 
         <MeasureCard
