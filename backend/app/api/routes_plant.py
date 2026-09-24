@@ -9,7 +9,7 @@ router = APIRouter(prefix="/api/plants", tags=["plants"])
 
 def to_orm_dict(data: dict) -> dict:
     mapping = {"id_type": "Id_Type"}
-    return {mapping.get(k, k): v for k, v in data.items() if v is not None or k not in mapping}
+    return {mapping.get(k, k): v for k, v in data.items()}
 
 @router.get("", response_model=list[PlantOut])
 def list_plants(db: Session = Depends(get_db)):
