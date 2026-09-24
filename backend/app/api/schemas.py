@@ -7,8 +7,8 @@ class PlantOut(BaseModel):
     date_semis: date | None
     date_plantation: date | None
     date_recolte_prevue: date | None
-    quantite: float | None
-    unite_quantite: str | None
+    quantite: float | None = None
+    unite_quantite: str | None = None
     statut: str
     notes: str | None
     id_type: int | None = Field(validation_alias="Id_Type")
@@ -17,8 +17,8 @@ class PlantOut(BaseModel):
     
 class PlantCreate(BaseModel):
     date_semis: date | None = None
-    quantite: float | None
-    unite_quantite: str | None
+    quantite: float | None = None
+    unite_quantite: str | None = None
     statut: str
     notes: str | None = None
     id_type: int | None = None
@@ -58,9 +58,9 @@ class TypeOut(BaseModel):
     rendement_min_kg_m2: float | None
     rendement_max_kg_m2: float | None
     besoin_eau_l_kg: float | None
-    created_at: datetime
-    updated_at: datetime
-    actif: bool
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+    actif: bool = True
 
     model_config = {"from_attributes": True, "populate_by_name": True}
 
@@ -88,9 +88,9 @@ class TypeCreate(BaseModel):
     rendement_min_kg_m2: float | None
     rendement_max_kg_m2: float | None
     besoin_eau_l_kg: float | None
-    created_at: datetime
-    updated_at: datetime
-    actif: bool
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+    actif: bool = True
 
 class TypeUpdate(BaseModel):
     nom: str

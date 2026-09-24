@@ -17,3 +17,13 @@ class PlantRepository:
         self.db.commit()
         self.db.refresh(obj)
         return obj
+
+    def update(self, id: int, data: dict) -> PlantORM | None:
+        obj = self.db.get(PlantORM, id)
+        if obj is None:
+            return None
+        for key, value in data.items():
+            setattr(obj, key, value)
+        self.db.commit()
+        self.db.refresh(obj)
+        return obj
