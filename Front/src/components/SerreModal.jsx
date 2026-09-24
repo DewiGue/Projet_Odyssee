@@ -43,7 +43,7 @@ export default function SerreModal({ onClose }) {
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto flex flex-col gap-6">
+        <div className="p-4 sm:p-6 overflow-y-auto flex flex-col gap-6">
           {isLoading ? (
             <p className="text-gray-400">Chargement des emplacements...</p>
           ) : null}
@@ -53,7 +53,7 @@ export default function SerreModal({ onClose }) {
           ) : null}
 
           {plants ? (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
               {plants.map((plant) => {
                 const plantType = types?.find((t) => t.id_type === plant.id_type) ?? null
 

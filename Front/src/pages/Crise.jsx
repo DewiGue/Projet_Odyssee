@@ -30,7 +30,7 @@ export default function Crise() {
     <div className="p-6 flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-red-500 tracking-wide">MODE CRISE</h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Card className="flex flex-col gap-2">
           <span className="text-sm text-gray-400">Autonomie cible</span>
           <span className="text-base font-medium text-gray-100">{autonomieCible} h</span>

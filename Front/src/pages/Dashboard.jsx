@@ -22,7 +22,7 @@ export default function Dashboard() {
     <div className="p-6 flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-gray-100">Dashboard</h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Card>
           <Gauge label="Niveau d'eau" value={niveau.value} unit={niveau.unit} status={niveau.status} />
         </Card>

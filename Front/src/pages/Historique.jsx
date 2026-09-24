@@ -81,7 +81,7 @@ export default function Historique() {
     <div className="p-6 flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-gray-100">Historique</h1>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {TABS.map((tab) => (
           <button
             key={tab.id}
@@ -117,8 +117,8 @@ export default function Historique() {
           {plantsError ? <p className="text-red-400">Impossible de charger l'historique.</p> : null}
 
           {plants ? (
-            <Card className="p-0 overflow-hidden">
-              <table className="w-full text-left">
+            <Card className="p-0 overflow-x-auto">
+              <table className="w-full text-left min-w-[500px]">
                 <thead className="bg-gray-800/60">
                   <tr>
                     <th className="p-3 text-gray-300">Date</th>
@@ -149,8 +149,8 @@ export default function Historique() {
         <div className="flex flex-col gap-8">
           <section className="flex flex-col gap-3">
             <h2 className="text-lg font-semibold text-gray-200">Événements</h2>
-            <Card className="p-0 overflow-hidden">
-              <table className="w-full text-left">
+            <Card className="p-0 overflow-x-auto">
+              <table className="w-full text-left min-w-[500px]">
                 <thead className="bg-gray-800/60">
                   <tr>
                     <th className="p-3 text-gray-300">Date</th>
@@ -171,8 +171,8 @@ export default function Historique() {
 
           <section className="flex flex-col gap-3">
             <h2 className="text-lg font-semibold text-gray-200">Mesures</h2>
-            <Card className="p-0 overflow-hidden">
-              <table className="w-full text-left">
+            <Card className="p-0 overflow-x-auto">
+              <table className="w-full text-left min-w-[500px]">
                 <thead className="bg-gray-800/60">
                   <tr>
                     <th className="p-3 text-gray-300">Date</th>

@@ -5,7 +5,7 @@ const SPEEDS = [1, 60, 600, 3600]
 export default function SpeedControl({ speed, onSpeedChange, onAdvance }) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {SPEEDS.map((s) => (
           <button
             key={s}
