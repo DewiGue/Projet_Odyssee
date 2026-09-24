@@ -178,8 +178,8 @@ class SimulationService:
         action, value = body.get('action'), body.get('value')
         with self._lock:
             if action == 'speed':
-                if type(value) is not int or value not in (1, 10, 60):
-                    raise ValueError('Vitesses disponibles : 1, 10 ou 60')
+                if type(value) is not int or value not in (1, 60, 600, 3600):
+                    raise ValueError('Vitesses disponibles : 1, 60, 600 ou 3600')
                 self.speed = value
             elif action == 'pump':
                 if type(value) is not bool:

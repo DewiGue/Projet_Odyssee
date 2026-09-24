@@ -5,6 +5,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
-        extra = "ignore"
+        extra = "ignore"   # <-- ajoute cette ligne
 
 settings = Settings()   # <-- cette ligne doit être présente
