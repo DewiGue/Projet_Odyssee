@@ -38,7 +38,7 @@ DEBIT_APPOINT_L_S = 0.2
 
 def _bruit(amplitude: float) -> float:
     """Petit bruit gaussien centré sur 0, borné par l'amplitude donnée."""
-    return random.gauss(0, amplitude)
+    return max(-amplitude, min(amplitude, random.gauss(0, amplitude)))
 
 
 def _relaxer(valeur: float, cible: float, vitesse: float) -> float:
@@ -62,7 +62,7 @@ def tick_reserve_propre(etat_precedent: EtatZone, dt: float) -> EtatZone:
     niveau = m["niveau_l"].valeur - CONSOMMATION_EAU_L_S * dt
     if niveau < SEUIL_APPOINT_L:
         niveau += DEBIT_APPOINT_L_S * dt
-    niveau = max(0.0, niveau)
+    niveau = min(NIVEAU_RESERVE_L, max(0.0, niveau))
 
     ph = _relaxer(m["ph"].valeur, _milieu(CONSIGNE_PH), VITESSE_RELAXATION_RESERVE) + _bruit(0.02)
     ec = _relaxer(m["ec"].valeur, _milieu(CONSIGNE_EC), VITESSE_RELAXATION_RESERVE) + _bruit(0.02)
