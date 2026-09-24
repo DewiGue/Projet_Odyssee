@@ -3,10 +3,10 @@
 import StatusBadge from './StatusBadge'
 
 const LEVEL_THRESHOLDS = [
-  { max: 40, label: 'Critique', color: 'bg-red-500', textColor: 'text-red-700' },
-  { max: 60, label: 'Mise à niveau à faire', color: 'bg-orange-400', textColor: 'text-orange-700' },
-  { max: 80, label: 'Satisfaisant', color: 'bg-blue-500', textColor: 'text-blue-700' },
-  { max: 100, label: 'Excellent', color: 'bg-green-500', textColor: 'text-green-700' },
+  { max: 40, label: 'Critique', color: 'bg-red-500', textColor: 'text-red-400' },
+  { max: 60, label: 'Mise à niveau à faire', color: 'bg-orange-400', textColor: 'text-orange-400' },
+  { max: 80, label: 'Satisfaisant', color: 'bg-blue-500', textColor: 'text-blue-400' },
+  { max: 100, label: 'Excellent', color: 'bg-green-500', textColor: 'text-green-400' },
 ]
 
 function getLevelInfo(percent) {
@@ -21,17 +21,17 @@ export default function Gauge({ label, value, max = 100, unit = '%', status }) {
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      {label ? <span className="text-sm text-gray-500">{label}</span> : null}
+      {label ? <span className="text-sm text-gray-400">{label}</span> : null}
 
-      <div className="w-full h-4 bg-gray-100 rounded-full overflow-hidden border border-gray-300">
+      <div className="w-full h-4 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
         <div
-          className={`h-full transition-all ${levelInfo ? levelInfo.color : 'bg-gray-300'}`}
+          className={`h-full transition-all ${levelInfo ? levelInfo.color : 'bg-gray-600'}`}
           style={{ width: `${percent}%` }}
         />
       </div>
 
       <div className="flex justify-between items-center">
-        <span className="text-sm font-medium">
+        <span className="text-sm font-medium text-gray-100">
           {hasValue ? `${value}${unit}` : '—'}
         </span>
         {levelInfo ? (
