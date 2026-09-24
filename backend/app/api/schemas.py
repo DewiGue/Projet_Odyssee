@@ -7,8 +7,8 @@ class PlantOut(BaseModel):
     date_semis: date | None
     date_plantation: date | None
     date_recolte_prevue: date | None
-    quantite: float
-    unite_quantite: str
+    quantite: float | None = None
+    unite_quantite: str | None = None
     statut: str
     notes: str | None
     id_type: int | None = Field(validation_alias="Id_Type")
@@ -17,8 +17,8 @@ class PlantOut(BaseModel):
     
 class PlantCreate(BaseModel):
     date_semis: date | None = None
-    quantite: float
-    unite_quantite: str
+    quantite: float | None = None
+    unite_quantite: str | None = None
     statut: str
     notes: str | None = None
     id_type: int | None = None

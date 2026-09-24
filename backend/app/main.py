@@ -3,6 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
+
+from fastapi import FastAPI
+
 from app.api.routes_plant import router as plant_router
 from app.api.routes_type import router as type_router
 
