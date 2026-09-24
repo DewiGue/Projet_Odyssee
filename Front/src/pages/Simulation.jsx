@@ -13,12 +13,33 @@ const SCENARIOS = [
   { id: 'normal', label: 'Fonctionnement normal' },
   { id: 'pump_failure', label: 'Panne de pompe' },
   { id: 'low_level', label: 'Niveau bas (30 %)' },
+  { id: 'pump_failure', label: 'Panne de pompe' },
+  { id: 'low_level', label: 'Niveau bas (30 %)' },
 ]
 
 const buttonClass =
   'px-4 py-2 rounded-lg border border-gray-700 text-gray-300 disabled:opacity-40 hover:bg-gray-800 transition-colors'
 
 export default function Simulation() {
+  const [token, setToken] = useState('')
+  const queryClient = useQueryClient()
+  const { data, error, isPending } = useSystemState()
+
+  const mutation = useMutation({
+    mutationFn: (body) => api('/simulation', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json', 'X-Simulation-Token': token },
+    }),
+    onSuccess: (result) => queryClient.setQueryData(['state'], result),
+  })
+
+  if (isPending) return <p className="p-6 text-gray-400">Connexion à la simulation…</p>
+  if (error) return <p role="alert" className="p-6 text-red-400">Simulation indisponible : {error.message}</p>
+
+  const sim = data.simulation
+  const disabled = mutation.isPending || !token.trim()
+  const send = (action, value) => mutation.mutate({ action, ...(value === undefined ? {} : { value }) })
   const [token, setToken] = useState('')
   const queryClient = useQueryClient()
   const { data, error, isPending } = useSystemState()
@@ -92,6 +113,9 @@ export default function Simulation() {
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-semibold text-gray-200">Scénarios</h2>
         <div className="flex gap-2 flex-wrap">
+          {SCENARIOS.map((s) => (
+            <ScenarioButton key={s.id} label={s.label} isActive={sim.scenario === s.id}
+              onClick={() => !disabled && send('scenario', s.id)} />
           {SCENARIOS.map((s) => (
             <ScenarioButton key={s.id} label={s.label} isActive={sim.scenario === s.id}
               onClick={() => !disabled && send('scenario', s.id)} />
