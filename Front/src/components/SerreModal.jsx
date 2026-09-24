@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { X } from 'lucide-react'
+import { X, Search } from 'lucide-react'
 import { usePlants, useUpdatePlant } from '../hooks/usePlants'
 import { useTypes } from '../hooks/useTypes'
 import PlantStatusBadge from './PlantStatusBadge'
-import PlantForm from './PlantForm'
+import PlantDetailModal from './PlantDetailModal'
 
 const GLOW_BY_STATUS = {
   Semis: 'shadow-[0_0_15px_rgba(59,130,246,0.6)] border-blue-400',
@@ -13,29 +13,32 @@ const GLOW_BY_STATUS = {
   Vide: 'border-gray-600',
 }
 
-function displayOrDash(value) {
-  return value === null || value === undefined || value === '' ? '—' : value
-}
-
-function displayRange(min, max, unit = '') {
-  return min !== null && max !== null && min !== undefined && max !== undefined
-    ? `${min} – ${max}${unit}`
-    : '—'
-}
-
 export default function SerreModal({ onClose }) {
   const { data: plants, isLoading, isError } = usePlants()
   const { data: types } = useTypes()
   const updatePlant = useUpdatePlant()
   const [selectedId, setSelectedId] = useState(null)
-  const [mode, setMode] = useState('view') // 'view' | 'edit'
+  const [mode, setMode] = useState('view')
   const [confirmingReset, setConfirmingReset] = useState(false)
+  const [search, setSearch] = useState('')
 
   const selectedPlant = plants?.find((p) => p.id_plant === selectedId) ?? null
   const selectedType = types?.find((t) => t.id_type === selectedPlant?.id_type) ?? null
 
+  const filteredPlants = plants?.filter((plant) => {
+    const plantType = types?.find((t) => t.id_type === plant.id_type) ?? null
+    const haystack = `${plantType?.nom ?? ''} ${plant.statut} #${plant.id_plant}`.toLowerCase()
+    return haystack.includes(search.toLowerCase())
+  }) ?? []
+
   function handleSelect(id) {
     setSelectedId(id)
+    setMode('view')
+    setConfirmingReset(false)
+  }
+
+  function handleCloseDetail() {
+    setSelectedId(null)
     setMode('view')
     setConfirmingReset(false)
   }
@@ -48,7 +51,6 @@ export default function SerreModal({ onClose }) {
   }
 
   function handleReset() {
-    // ⚠️ id_type ne sera pas remis à null côté BACK (limitation de to_orm_dict, à voir avec Dewi)
     updatePlant.mutate(
       {
         id: selectedPlant.id_plant,
@@ -83,210 +85,61 @@ export default function SerreModal({ onClose }) {
           {isError ? <p className="text-red-400">Impossible de charger les emplacements.</p> : null}
 
           {plants ? (
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
-              {plants.map((plant) => {
-                const plantType = types?.find((t) => t.id_type === plant.id_type) ?? null
-                return (
-                  <button
-                    type="button"
-                    key={plant.id_plant}
-                    onClick={() => handleSelect(plant.id_plant)}
-                    className={`border rounded-xl p-3 flex flex-col items-center gap-2 bg-gray-900 transition-transform hover:scale-105 ${
-                      selectedId === plant.id_plant ? 'ring-2 ring-cyan-400' : ''
-                    } ${GLOW_BY_STATUS[plant.statut] ?? 'border-gray-600'}`}
-                  >
-                    <span className="text-xs text-gray-400 text-center">
-                      {plantType ? plantType.nom : '—'}
-                    </span>
-                    <PlantStatusBadge statut={plant.statut} />
-                  </button>
-                )
-              })}
-            </div>
-          ) : null}
-
-          {selectedPlant ? (
-            <div className="border border-cyan-500/30 rounded-xl p-4 bg-gray-900 flex flex-col gap-3">
-              <div className="flex justify-between items-center">
-                <h3 className="text-cyan-300 font-semibold">Emplacement #{selectedPlant.id_plant}</h3>
-                <PlantStatusBadge statut={selectedPlant.statut} />
+            <>
+              <div className="relative max-w-sm">
+                <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Rechercher (type, statut, #emplacement...)"
+                  className="w-full pl-10 pr-3 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500/50"
+                />
               </div>
 
-              {mode === 'edit' ? (
-                <PlantForm
-                  plant={selectedPlant}
-                  types={types}
-                  onSubmit={handleSubmitForm}
-                  onCancel={() => setMode('view')}
-                  isSaving={updatePlant.isPending}
-                />
-              ) : (
-                <>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-gray-400">Type</span>
-                      <span className="text-gray-100">
-                        {selectedType
-                          ? `${selectedType.nom}${selectedType.variete ? ` (${selectedType.variete})` : ''}`
-                          : displayOrDash(selectedPlant.id_type)}
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
+                {filteredPlants.map((plant) => {
+                  const plantType = types?.find((t) => t.id_type === plant.id_type) ?? null
+                  return (
+                    <button
+                      type="button"
+                      key={plant.id_plant}
+                      onClick={() => handleSelect(plant.id_plant)}
+                      className={`border rounded-xl p-3 flex flex-col items-center gap-2 bg-gray-900 transition-transform hover:scale-105 ${GLOW_BY_STATUS[plant.statut] ?? 'border-gray-600'}`}
+                    >
+                      <span className="text-xs text-gray-400 text-center">
+                        {plantType ? plantType.nom : '—'}
                       </span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-gray-400">Date semis</span>
-                      <span className="text-gray-100">{displayOrDash(selectedPlant.date_semis)}</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-gray-400">Date plantation</span>
-                      <span className="text-gray-100">{displayOrDash(selectedPlant.date_plantation)}</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-gray-400">Récolte prévue</span>
-                      <span className="text-gray-100">{displayOrDash(selectedPlant.date_recolte_prevue)}</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-gray-400">Quantité</span>
-                      <span className="text-gray-100">
-                        {selectedPlant.quantite !== null && selectedPlant.quantite !== undefined
-                          ? `${selectedPlant.quantite} ${selectedPlant.unite_quantite ?? ''}`
-                          : '—'}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-gray-400">Notes</span>
-                      <span className="text-gray-100">{displayOrDash(selectedPlant.notes)}</span>
-                    </div>
-                  </div>
+                      <PlantStatusBadge statut={plant.statut} />
+                    </button>
+                  )
+                })}
+              </div>
 
-                  {selectedType ? (
-                    <div className="border-t border-gray-800 pt-3 flex flex-col gap-2">
-                      <h4 className="text-gray-300 font-medium text-sm">
-                        Fiche du type « {selectedType.nom} »
-                      </h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Système de culture</span>
-                          <span className="text-gray-100">{displayOrDash(selectedType.systeme_culture)}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Famille</span>
-                          <span className="text-gray-100">{displayOrDash(selectedType.famille)}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">pH</span>
-                          <span className="text-gray-100">{displayRange(selectedType.ph_min, selectedType.ph_max)}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">EC</span>
-                          <span className="text-gray-100">{displayRange(selectedType.ec_min, selectedType.ec_max)}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Temp. eau</span>
-                          <span className="text-gray-100">{displayRange(selectedType.temp_eau_min, selectedType.temp_eau_max, '°C')}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Temp. air</span>
-                          <span className="text-gray-100">{displayRange(selectedType.temp_air_min, selectedType.temp_air_max, '°C')}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Humidité</span>
-                          <span className="text-gray-100">{displayRange(selectedType.humidite_min, selectedType.humidite_max, '%')}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">CO2</span>
-                          <span className="text-gray-100">{displayRange(selectedType.co2_min, selectedType.co2_max, ' ppm')}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">PPFD</span>
-                          <span className="text-gray-100">{displayRange(selectedType.ppfd_min, selectedType.ppfd_max)}</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Photopériode</span>
-                          <span className="text-gray-100">
-                            {selectedType.photoperiode_heures !== null ? `${selectedType.photoperiode_heures} h` : '—'}
-                          </span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Cycle de culture</span>
-                          <span className="text-gray-100">
-                            {selectedType.cycle_culture_jours !== null ? `${selectedType.cycle_culture_jours} jours` : '—'}
-                          </span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Rendement</span>
-                          <span className="text-gray-100">
-                            {displayRange(selectedType.rendement_min_kg_m2, selectedType.rendement_max_kg_m2, ' kg/m²')}
-                          </span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Besoin en eau</span>
-                          <span className="text-gray-100">
-                            {selectedType.besoin_eau_l_kg !== null ? `${selectedType.besoin_eau_l_kg} L/kg` : '—'}
-                          </span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-gray-400">Actif</span>
-                          <span className="text-gray-100">{selectedType.actif ? 'Oui' : 'Non'}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  <div className="flex gap-2 justify-end pt-2 flex-wrap">
-                    {selectedPlant.statut === 'Vide' ? (
-                      <button
-                        type="button"
-                        onClick={() => setMode('edit')}
-                        className="px-4 py-2 rounded-lg border border-cyan-500/50 bg-cyan-500/10 text-cyan-300 font-medium hover:bg-cyan-500/20 transition-colors"
-                      >
-                        Remplir cet emplacement
-                      </button>
-                    ) : (
-                      <>
-                        <button
-                          type="button"
-                          onClick={() => setMode('edit')}
-                          className="px-4 py-2 rounded-lg border border-blue-500/50 bg-blue-500/10 text-blue-300 font-medium hover:bg-blue-500/20 transition-colors"
-                        >
-                          Modifier
-                        </button>
-                        {confirmingReset ? (
-                          <>
-                            <span className="text-sm text-gray-400 self-center">Confirmer ?</span>
-                            <button
-                              type="button"
-                              onClick={handleReset}
-                              disabled={updatePlant.isPending}
-                              className="px-4 py-2 rounded-lg border border-red-500/50 bg-red-500/10 text-red-300 font-medium hover:bg-red-500/20 transition-colors disabled:opacity-50"
-                            >
-                              Oui, vider
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setConfirmingReset(false)}
-                              className="px-4 py-2 rounded-lg border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors"
-                            >
-                              Non
-                            </button>
-                          </>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => setConfirmingReset(true)}
-                            className="px-4 py-2 rounded-lg border border-red-500/50 text-red-300 font-medium hover:bg-red-500/10 transition-colors"
-                          >
-                            Vider l'emplacement
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
+              {filteredPlants.length === 0 ? (
+                <p className="text-gray-500 text-sm text-center">Aucun emplacement ne correspond à la recherche.</p>
+              ) : null}
+            </>
           ) : null}
         </div>
 
       </div>
+
+      {selectedPlant ? (
+        <PlantDetailModal
+          plant={selectedPlant}
+          type={selectedType}
+          types={types}
+          mode={mode}
+          onModeChange={setMode}
+          onSubmitForm={handleSubmitForm}
+          onReset={handleReset}
+          confirmingReset={confirmingReset}
+          onConfirmingResetChange={setConfirmingReset}
+          isSaving={updatePlant.isPending}
+          onClose={handleCloseDetail}
+        />
+      ) : null}
     </div>
   )
 }

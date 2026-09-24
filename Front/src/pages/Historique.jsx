@@ -3,11 +3,12 @@
 // - "Système" : fakeHistoriqueEvenements/Mesures, en attendant les routes BACK
 //   du module supervision arrosage (pas encore disponibles côté Dewi)
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Card from '../components/Card'
 import { Search } from 'lucide-react'
 import StatusBadge from '../components/StatusBadge'
 import PlantStatusBadge from '../components/PlantStatusBadge'
+import PlantDetailCard from '../components/PlantDetailCard'
 import { usePlants } from '../hooks/usePlants'
 import { useTypes } from '../hooks/useTypes'
 import { fakeHistoriqueEvenements, fakeHistoriqueMesures } from '../mocks/fakeData'
@@ -59,6 +60,7 @@ const TABS = [
 export default function Historique() {
   const [activeTab, setActiveTab] = useState('plantations')
   const [search, setSearch] = useState('')
+  const [selectedEventId, setSelectedEventId] = useState(null)
   const { data: plants, isLoading: plantsLoading, isError: plantsError } = usePlants()
   const { data: types } = useTypes()
 
@@ -110,7 +112,7 @@ export default function Historique() {
       </div>
 
       {activeTab === 'plantations' ? (
-        <section className="flex flex-col gap-3">
+        <section className="flex flex-col gap-4">
           <h2 className="text-lg font-semibold text-gray-200">Cycle de vie des plantations</h2>
 
           {plantsLoading ? <p className="text-gray-400">Chargement...</p> : null}
@@ -128,16 +130,40 @@ export default function Historique() {
                   </tr>
                 </thead>
                 <tbody>
-                  {plantEvents.map((event) => (
-                    <tr key={event.id} className="border-t border-gray-800">
-                      <td className="p-3 text-sm text-gray-400">{event.date}</td>
-                      <td className="p-3 text-gray-100">{event.label}</td>
-                      <td className="p-3 text-gray-100">#{event.idPlant}</td>
-                      <td className="p-3">
-                        <PlantStatusBadge statut={event.statut} />
-                      </td>
-                    </tr>
-                  ))}
+                  {plantEvents.map((event) => {
+                    const isSelected = selectedEventId === event.id
+                    const eventPlant = isSelected
+                      ? plants?.find((p) => p.id_plant === event.idPlant) ?? null
+                      : null
+                    const eventType = eventPlant
+                      ? types?.find((t) => t.id_type === eventPlant.id_type) ?? null
+                      : null
+
+                    return (
+                      <React.Fragment key={event.id}>
+                        <tr
+                          onClick={() => setSelectedEventId(isSelected ? null : event.id)}
+                          className={`border-t border-gray-800 cursor-pointer transition-colors hover:bg-gray-800/40 ${
+                            isSelected ? 'bg-cyan-500/10' : ''
+                          }`}
+                        >
+                          <td className="p-3 text-sm text-gray-400">{event.date}</td>
+                          <td className="p-3 text-gray-100">{event.label}</td>
+                          <td className="p-3 text-gray-100">#{event.idPlant}</td>
+                          <td className="p-3">
+                            <PlantStatusBadge statut={event.statut} />
+                          </td>
+                        </tr>
+                        {isSelected && eventPlant ? (
+                          <tr className="border-t border-gray-800 bg-gray-900/60">
+                            <td colSpan={4} className="p-4">
+                              <PlantDetailCard plant={eventPlant} type={eventType} />
+                            </td>
+                          </tr>
+                        ) : null}
+                      </React.Fragment>
+                    )
+                  })}
                 </tbody>
               </table>
             </Card>
