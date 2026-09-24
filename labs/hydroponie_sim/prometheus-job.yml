@@ -1,0 +1,6 @@
+# Bloc à ajouter SOUS le scrape_configs existant, sans remplacer les autres jobs.
+- job_name: hydroponie_simulation
+  scrape_interval: 5s
+  metrics_path: /metrics
+  static_configs:
+    - targets: ['127.0.0.1:8000']

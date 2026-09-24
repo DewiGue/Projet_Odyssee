@@ -1,0 +1,243 @@
+{
+  "schema_version": 1,
+  "source": "simulation",
+  "serre": "S001",
+  "observed_at": "2026-09-23T14:36:32.043711+00:00",
+  "simulated_at": "2026-09-23T14:36:32.043573+00:00",
+  "records": [
+    {
+      "zone": "reserve_propre",
+      "sens": "sortie",
+      "mesure": "niveau_l",
+      "valeur": 1210.0,
+      "unite": "L",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "reserve_propre",
+      "sens": "sortie",
+      "mesure": "ph",
+      "valeur": 6.15,
+      "unite": "pH",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "reserve_propre",
+      "sens": "sortie",
+      "mesure": "ec",
+      "valeur": 1.7,
+      "unite": "mS/cm",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "reserve_propre",
+      "sens": "sortie",
+      "mesure": "temperature",
+      "valeur": 20.0,
+      "unite": "°C",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "cuve_nutritive",
+      "sens": "sortie",
+      "mesure": "niveau_l",
+      "valeur": 1210.0,
+      "unite": "L",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "cuve_nutritive",
+      "sens": "sortie",
+      "mesure": "ph",
+      "valeur": 6.16,
+      "unite": "pH",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "cuve_nutritive",
+      "sens": "sortie",
+      "mesure": "ec",
+      "valeur": 1.71,
+      "unite": "mS/cm",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "cuve_nutritive",
+      "sens": "sortie",
+      "mesure": "temperature",
+      "valeur": 19.98,
+      "unite": "°C",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "sortie_pompe",
+      "sens": "sortie",
+      "mesure": "debit_l_s",
+      "valeur": 0.509,
+      "unite": "L/s",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "sortie_pompe",
+      "sens": "sortie",
+      "mesure": "pression_bar",
+      "valeur": 1.79,
+      "unite": "bar",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "sortie_pompe",
+      "sens": "sortie",
+      "mesure": "ph",
+      "valeur": 6.16,
+      "unite": "pH",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "sortie_pompe",
+      "sens": "sortie",
+      "mesure": "ec",
+      "valeur": 1.71,
+      "unite": "mS/cm",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "sortie_pompe",
+      "sens": "sortie",
+      "mesure": "temperature",
+      "valeur": 19.98,
+      "unite": "°C",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "climat",
+      "sens": "sortie",
+      "mesure": "temp_air",
+      "valeur": 22.11,
+      "unite": "°C",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "climat",
+      "sens": "sortie",
+      "mesure": "humidite",
+      "valeur": 67.75,
+      "unite": "%",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "climat",
+      "sens": "sortie",
+      "mesure": "ph",
+      "valeur": 6.16,
+      "unite": "pH",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "climat",
+      "sens": "sortie",
+      "mesure": "ec",
+      "valeur": 1.71,
+      "unite": "mS/cm",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "climat",
+      "sens": "sortie",
+      "mesure": "temperature",
+      "valeur": 20.07,
+      "unite": "°C",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "retour",
+      "sens": "sortie",
+      "mesure": "ph",
+      "valeur": 6.16,
+      "unite": "pH",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "retour",
+      "sens": "sortie",
+      "mesure": "ec",
+      "valeur": 1.77,
+      "unite": "mS/cm",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    },
+    {
+      "zone": "retour",
+      "sens": "sortie",
+      "mesure": "temperature",
+      "valeur": 20.09,
+      "unite": "°C",
+      "qualite": "VALIDE",
+      "timestamp": "2026-09-23T14:36:32.043573+00:00"
+    }
+  ],
+  "simulation": {
+    "paused": false,
+    "speed": 1,
+    "sim_seconds": 0,
+    "scenario": "normal",
+    "pump_requested": true,
+    "pump_running": true,
+    "last_update_timestamp_seconds": 1790174192.0437107
+  },
+  "niveau": {
+    "value": 100.0,
+    "unit": "%",
+    "status": "OK"
+  },
+  "temperature": {
+    "value": 19.98,
+    "unit": "°C",
+    "status": "OK"
+  },
+  "ph": {
+    "value": 6.16,
+    "unit": "pH",
+    "status": "OK"
+  },
+  "ec": {
+    "value": 1.71,
+    "unit": "mS/cm",
+    "status": "OK"
+  },
+  "debit": {
+    "value": 0.509,
+    "unit": "L/s",
+    "status": "OK"
+  },
+  "pression": {
+    "value": 1.79,
+    "unit": "bar",
+    "status": "OK"
+  },
+  "pompe": "ARROSAGE",
+  "etatGlobal": "OK",
+  "alerts": [],
+  "dernierEvenement": "Simulation initialisée — valeurs synthétiques",
+  "prochainCycle": null,
+  "mode": "SIMULATION"
+}
